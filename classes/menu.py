@@ -25,22 +25,37 @@ class Menu:
                 grafica.node(str(j)+'.'+str(j), str(j))
                 grafica.edge("nombre", str(j)+'.'+str(j))
                 
-        # Agregar los nodos de cada pieza
-        # Convertir cada fila de la matriz en un nodo y cada pieza en un borde
-        for i, fila in enumerate(matriz.split('\n'), start=1):
-            for j, pieza in enumerate(fila.split('|'), start=1):
-                if pieza.strip():
-                    grafica.node(str(i) + ',' + str(j), pieza.strip(), color="blue")
-                elif not pieza.strip():
-                    grafica.node(str(i) + ',' + str(j), str(""))
-                if j < len(fila.split('|')) - 1:
-                    grafica.edge(str(i) + ',' + str(j), str(i) + ',' + str(j+1))
-                    
-            
-                
-            
-
-
+        # Agregar nodos para cada pieza
+        for i in range(1, int(tablero.filas)+1):
+            for j in range(1, int(tablero.columnas)+1):
+                pieza = None
+                for pieza_encontrada in self.lista_piezas.lista_piezas:
+                    if pieza_encontrada.posicion_fila == i and pieza_encontrada.posicion_columna == j:
+                        pieza = pieza_encontrada
+                        break
+                if pieza:
+                    if str(pieza.color) == "a":
+                        grafica.node(str(i) + "," + str(j), str("") ,color="blue", style="filled", fillcolor="blue")
+                    elif str(pieza.color) == "b":
+                        grafica.node(str(i) + "," + str(j), str("") ,color="red", style="filled", fillcolor="red")
+                    elif str(pieza.color) == "c":
+                        grafica.node(str(i) + "," + str(j), str("") ,color="green", style="filled", fillcolor="green")
+                    elif str(pieza.color) == "d":
+                        grafica.node(str(i) + "," + str(j), str("") ,color="purple", style="filled", fillcolor="purple")
+                    elif str(pieza.color) == "e":
+                        grafica.node(str(i) + "," + str(j), str("") ,color="orange", style="filled", fillcolor="orange")
+                else:
+                    grafica.node(str(i) + "," + str(j), str(""))
+        
+        # Agregar las aristas de las piezas
+        for i in range(1, int(tablero.filas)+1):
+            for j in range(1, int(tablero.columnas)+1):
+                if i < int(tablero.filas):
+                    grafica.edge(str(i) + "," + str(j), str(i+1) + "," + str(j))
+        
+        # Agregar las aristas de la primera columna a la segunda   
+        for j in range(1, int(tablero.columnas)+1):
+            grafica.edge(str(j)+'.'+str(j), str("1") + "," + str(j))
 
         # Guardar la gráfica en un archivo
         grafica.render('grafica.dot', format='png', view=True)
@@ -70,7 +85,7 @@ class Menu:
                     posicion_fila = int(input("Ingrese el numero de la fila donde desea colocar la pieza: "))
                     print(f"\nRango de columnas: 1-{tablero.columnas}")
                     posicion_columna = int(input("Ingrese el numero de la columna donde desea colocar la pieza: "))
-                    print(f"\nSu pieza color Azul se encuentra en la posicion: Fila:{posicion_fila},Columna:{posicion_columna}")
+                    print(f"\nSu pieza color Azul se encuentra en la posicion: Fila:{posicion_fila},Columna:{posicion_columna}\n")
                     pieza_nueva = Pieza(letra_color, posicion_fila, posicion_columna)
                     self.lista_piezas.lista_piezas.agregar(pieza_nueva)
                 elif letra_color == "b":
@@ -79,7 +94,7 @@ class Menu:
                     posicion_fila = int(input("Ingrese el numero de la fila donde desea colocar la pieza: "))
                     print(f"\nRango de columnas: 1-{tablero.columnas}")
                     posicion_columna = int(input("Ingrese el numero de la columna donde desea colocar la pieza: "))
-                    print(f"\nSu pieza color Rojo se encuentra en la posicion: Fila:{posicion_fila},Columna:{posicion_columna}")
+                    print(f"\nSu pieza color Rojo se encuentra en la posicion: Fila:{posicion_fila},Columna:{posicion_columna}\n")
                     pieza_nueva = Pieza(letra_color, posicion_fila, posicion_columna)
                     self.lista_piezas.lista_piezas.agregar(pieza_nueva)
                 elif letra_color == "c":
@@ -88,7 +103,7 @@ class Menu:
                     posicion_fila = int(input("Ingrese el numero de la fila donde desea colocar la pieza: "))
                     print(f"\nRango de columnas: 1-{tablero.columnas}")
                     posicion_columna = int(input("Ingrese el numero de la columna donde desea colocar la pieza: "))
-                    print(f"\nSu pieza color Verde se encuentra en la posicion: Fila:{posicion_fila},Columna:{posicion_columna}")
+                    print(f"\nSu pieza color Verde se encuentra en la posicion: Fila:{posicion_fila},Columna:{posicion_columna}\n")
                     pieza_nueva = Pieza(letra_color, posicion_fila, posicion_columna)
                     self.lista_piezas.lista_piezas.agregar(pieza_nueva)
                 elif letra_color == "d":
@@ -97,7 +112,7 @@ class Menu:
                     posicion_fila = int(input("Ingrese el numero de la fila donde desea colocar la pieza: "))
                     print(f"\nRango de columnas: 1-{tablero.columnas}")
                     posicion_columna = int(input("Ingrese el numero de la columna donde desea colocar la pieza: "))
-                    print(f"\nSu pieza color Purpura se encuentra en la posicion: Fila:{posicion_fila},Columna:{posicion_columna}")
+                    print(f"\nSu pieza color Purpura se encuentra en la posicion: Fila:{posicion_fila},Columna:{posicion_columna}\n")
                     pieza_nueva = Pieza(letra_color, posicion_fila, posicion_columna)
                     self.lista_piezas.lista_piezas.agregar(pieza_nueva)
                 elif letra_color == "e":
@@ -106,7 +121,7 @@ class Menu:
                     posicion_fila = int(input("Ingrese el numero de la fila donde desea colocar la pieza: "))
                     print(f"\nRango de columnas: 1-{tablero.columnas}")
                     posicion_columna = int(input("Ingrese el numero de la columna donde desea colocar la pieza: "))
-                    print(f"\nSu pieza color Naranja se encuentra en la posicion: Fila:{posicion_fila},Columna:{posicion_columna}")
+                    print(f"\nSu pieza color Naranja se encuentra en la posicion: Fila:{posicion_fila},Columna:{posicion_columna}\n")
                     pieza_nueva = Pieza(letra_color, posicion_fila, posicion_columna)
                     self.lista_piezas.lista_piezas.agregar(pieza_nueva)
             
@@ -120,7 +135,9 @@ class Menu:
                                 pieza = pieza_encontrada
                                 break
                         if pieza:
-                            fila += pieza.color + "|"
+                            color = str(pieza.color)
+                            color = color.upper()
+                            fila += color + "|"
                         else:
                             fila += " |"
                     matriz += fila + "\n"
